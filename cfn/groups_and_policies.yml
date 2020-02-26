@@ -1,0 +1,51 @@
+Resources:
+  AttendantGroup:
+    Type: 'AWS::IAM::Group'
+    Properties:
+      GroupName: 'AttendantGroup'
+
+  AttendantPolicy:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+      ManagedPolicyName: 'AttendantPolicy'
+      Groups:
+        - !Ref AttendantGroup
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action: '*'
+            Resource: '*'
+          - Effect: Deny
+            Action: 'ec2:RunInstances'
+            Resource: 'arn:aws:ec2:*:*:instance/*'
+            Condition:
+              'ForAnyValue:StringNotLike':
+                'ec2:InstanceType':
+                  - '*.nano'
+                  - '*.small'
+                  - '*.micro'
+          - Effect: Deny
+            Action:
+              - 'ec2:DescribeReservedInstances' 
+              - 'ec2:ModifyReservedInstances'
+              - 'ec2:PurchaseReservedInstancesOffering'
+              - 'ec2:DescribeInstances'
+              - 'ec2:DescribeAvailabilityZones'
+              - 'ec2:DescribeReservedInstancesOfferings'
+            Resource: '*'
+          - Effect: Deny
+            Action: 'organizations:*'
+            Resource: '*'
+          - Effect: Deny
+            Action: 'config:*'
+            Resource: '*'
+          - Effect: Deny
+            Action: 'aws-portal:*'
+            Resource: '*'
+          - Effect: Deny
+            Action: 'aws-marketplace:*'
+            Resource: '*'
+
+
+
