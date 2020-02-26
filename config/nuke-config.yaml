@@ -1,0 +1,17 @@
+regions:
+  - global
+
+account-blacklist:
+  - "999999999999" # production
+
+accounts:
+  "YOUR_AWS_ACCOUNT_HERE":
+    filters:
+      IAMUser:
+        - "admin"
+      IAMUserPolicyAttachment:
+        - "admin -> AdministratorAccess"
+      IAMUserAccessKey:
+        - "admin -> YOUR_ACCESS_KEY_HERE""
+      
+  
